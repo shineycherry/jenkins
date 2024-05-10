@@ -1,69 +1,83 @@
 pipeline {
     agent any
+    
     stages {
         stage('Build') {
             steps {
-                echo 'Simulating code build...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Building the code...'
+                    sh 'mvn clean package' // Maven build
                 }
             }
         }
+        
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Simulating running unit and integration tests...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Running unit tests...'
+                    sh 'mvn test' // JUnit for unit tests
+                    echo 'Running integration tests...'
+                    sh 'mvn verify' // Integration tests (e.g., with Selenium)
                 }
             }
         }
+        
         stage('Code Analysis') {
             steps {
-                echo 'Simulating code analysis...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Running code analysis...'
+                    sh 'sonar-scanner' // SonarQube for code analysis
                 }
             }
         }
+        
         stage('Security Scan') {
             steps {
-                echo 'Simulating security scanning...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Performing security scan...'
+                    sh 'zap-cli --zap-url http://localhost --scan' // OWASP ZAP for security scanning
                 }
             }
         }
+        
         stage('Deploy to Staging') {
             steps {
-                echo 'Simulating deployment to staging...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Deploying to staging server...'
+                    sh 'aws deploy create-deployment --application-name MyApp --deployment-group Staging --s3-location s3://my-bucket/my-app.zip --region us-east-1' // AWS CLI for deployment
                 }
             }
         }
+        
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Simulating integration tests on staging...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Running integration tests on staging...'
+                    sh 'newman run my-collection.json' // Postman (Newman) for API testing
                 }
             }
         }
+        
         stage('Deploy to Production') {
             steps {
-                echo 'Simulating deployment to production...'
                 script {
-                    currentBuild.result = 'SUCCESS'
+                    echo 'Deploying to production server...'
+                    sh 'aws deploy create-deployment --application-name MyApp --deployment-group Production --s3-location s3://my-bucket/my-app.zip --region us-east-1' // AWS CLI for deployment
                 }
             }
         }
     }
+    
     post {
-        always {
-            // Send email notification
-            emailext subject: "${currentBuild.result == 'SUCCESS' ? 'Pipeline Success' : 'Pipeline Failure'}",
-                      body: "Pipeline execution result: ${currentBuild.result}",
-                      to: 'indrajapolkampalli@gmail.com'
+        success {
+            emailext body: "Pipeline successfully completed!",
+                     subject: "Pipeline Status: SUCCESS",
+                     to: "indrajapolkampalli@gmail.com"
+        }
+        failure {
+            emailext body: "Pipeline failed to complete.",
+                     subject: "Pipeline Status: FAILURE",
+                     to: "indrajapolkampalli@gmail.com"
         }
     }
 }
