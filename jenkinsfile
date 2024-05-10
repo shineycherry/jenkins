@@ -1,83 +1,61 @@
 pipeline {
-    agent any
-    
-    stages {
-        stage('Build') {
-            steps {
-                script {
-                    echo 'Building the code...'
-                    sh 'mvn clean package' // Maven build
-                }
-            }
-        }
-        
-        stage('Unit and Integration Tests') {
-            steps {
-                script {
-                    echo 'Running unit tests...'
-                    sh 'mvn test' // JUnit for unit tests
-                    echo 'Running integration tests...'
-                    sh 'mvn verify' // Integration tests (e.g., with Selenium)
-                }
-            }
-        }
-        
-        stage('Code Analysis') {
-            steps {
-                script {
-                    echo 'Running code analysis...'
-                    sh 'sonar-scanner' // SonarQube for code analysis
-                }
-            }
-        }
-        
-        stage('Security Scan') {
-            steps {
-                script {
-                    echo 'Performing security scan...'
-                    sh 'zap-cli --zap-url http://localhost --scan' // OWASP ZAP for security scanning
-                }
-            }
-        }
-        
-        stage('Deploy to Staging') {
-            steps {
-                script {
-                    echo 'Deploying to staging server...'
-                    sh 'aws deploy create-deployment --application-name MyApp --deployment-group Staging --s3-location s3://my-bucket/my-app.zip --region us-east-1' // AWS CLI for deployment
-                }
-            }
-        }
-        
-        stage('Integration Tests on Staging') {
-            steps {
-                script {
-                    echo 'Running integration tests on staging...'
-                    sh 'newman run my-collection.json' // Postman (Newman) for API testing
-                }
-            }
-        }
-        
-        stage('Deploy to Production') {
-            steps {
-                script {
-                    echo 'Deploying to production server...'
-                    sh 'aws deploy create-deployment --application-name MyApp --deployment-group Production --s3-location s3://my-bucket/my-app.zip --region us-east-1' // AWS CLI for deployment
-                }
-            }
-        }
-    }
-    
-    post {
-        success {
-            emailext body: "Pipeline successfully completed!",
-                     subject: "Pipeline Status: SUCCESS",
-                     to: "indrajapolkampalli@gmail.com"
-        }
-        failure {
-            emailext body: "Pipeline failed to complete.",
-                     subject: "Pipeline Status: FAILURE",
-                     to: "indrajapolkampalli@gmail.com"
-        }
-    }
+agent any
+stages {
+stage('Build') {
+steps {
+echo 'Building the code in jenkins pipeline...'
+// Tool: Maven
+}
+}
+stage('Unit and Integration Tests') {
+steps {
+echo 'Running unit tests...'
+// Tool: JUnit
+echo 'Running integration tests...'
+// Tool: Selenium
+}
+}
+stage('Code Analysis') {
+steps {
+echo 'Running code analysis...'
+// Tool: SonarQube
+}
+}
+stage('Security Scan') {
+steps {
+echo 'Performing security scan...'
+// Tool: OWASP ZAP
+}
+}
+stage('Deploy to Staging') {
+steps {
+echo 'Deploying to staging server...'
+// Tool: AWS CLI
+}
+}
+stage('Integration Tests on Staging') {
+steps {
+echo 'Running integration tests on staging...'
+// Tool: Postman
+}
+}
+stage('Deploy to Production') {
+steps {
+echo 'Deploying to production server...'
+// Tool: AWS CLI
+}
+}
+}
+post {
+success {
+mail to: "indrajapolkampalli@gmail.com",
+subject: "Build Status Email",
+body: "Successfull Build!"
+}
+failure {
+mail to: "indrajapolkampalli@gmail.com",
+subject: "Build Status Email",
+body: "Failure in Build!"
+}
+}
 }
