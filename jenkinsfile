@@ -23,25 +23,25 @@ echo 'Running code analysis...'
 }
 stage('Security Scan') {
 steps {
-echo 'Performing security scan...'
+echo 'Performing a security scan...'
 // Tool: OWASP ZAP
 }
 }
 stage('Deploy to Staging') {
 steps {
-echo 'Deploying to staging environment...'
+echo 'Deploying the application to a staging environment...'
 // Tool: AWS CLI
 }
 }
 stage('Integration Tests on Staging') {
 steps {
-echo 'Running integration tests on staging...'
+echo 'Running integration tests on the staging environment...'
 // Tool: Postman
 }
 }
 stage('Deploy to Production') {
 steps {
-echo 'Deploying to production environment...'
+echo 'Deploying the application to a production environment...'
 // Tool: AWS CLI
 }
 }
