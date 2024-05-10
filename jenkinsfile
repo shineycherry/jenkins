@@ -3,7 +3,7 @@ agent any
 stages {
 stage('Build') {
 steps {
-echo 'Building the code in jenkins pipeline...'
+echo 'Simulating the code in jenkins pipeline...'
 // Tool: Maven
 }
 }
@@ -29,7 +29,7 @@ echo 'Performing security scan...'
 }
 stage('Deploy to Staging') {
 steps {
-echo 'Deploying to staging server...'
+echo 'Deploying to staging environment...'
 // Tool: AWS CLI
 }
 }
@@ -41,7 +41,7 @@ echo 'Running integration tests on staging...'
 }
 stage('Deploy to Production') {
 steps {
-echo 'Deploying to production server...'
+echo 'Deploying to production environment...'
 // Tool: AWS CLI
 }
 }
@@ -49,13 +49,13 @@ echo 'Deploying to production server...'
 post {
 success {
 mail to: "indrajapolkampalli@gmail.com",
-subject: "Build Status Email",
-body: "Successfull Build!"
+subject: "Pipeline execution succeeded",
+body: "Pipeline Success"
 }
 failure {
 mail to: "indrajapolkampalli@gmail.com",
-subject: "Build Status Email",
-body: "Failure in Build!"
+subject: "Pipeline execution failed",
+body: "Pipeline Failure"
 }
 }
 }
