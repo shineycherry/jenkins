@@ -47,17 +47,17 @@ pipeline {
     post {
         success {
             // Email notification on success
-            emailext body: 'Pipeline execution succeeded. See attached logs.', 
+            emailext body: 'Pipeline execution succeeded, 
                      subject: 'Pipeline Success', 
                      to: 'indrajapolkampalli@gmail.com', 
-                     attachLog: true
+        
         }
         failure {
             // Email notification on failure
-            emailext body: 'Pipeline execution failed. See attached logs.', 
+            emailext body: 'Pipeline execution failed,
                      subject: 'Pipeline Failure', 
                      to: 'indrajapolkampalli@gmail.com', 
-                     attachLog: true
+                
         }
     }
 }
