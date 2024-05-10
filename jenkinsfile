@@ -1,61 +1,84 @@
 pipeline {
-agent any
-stages {
-stage('Build') {
-steps {
-echo 'Building the code in jenkins pipeline...'
-// Tool: Maven
-}
-}
-stage('Unit and Integration Tests') {
-steps {
-echo 'Running unit tests...'
-// Tool: JUnit
-echo 'Running integration tests...'
-// Tool: Selenium
-}
-}
-stage('Code Analysis') {
-steps {
-echo 'Running code analysis...'
-// Tool: SonarQube
-}
-}
-stage('Security Scan') {
-steps {
-echo 'Performing security scan...'
-// Tool: OWASP ZAP
-}
-}
-stage('Deploy to Staging') {
-steps {
-echo 'Deploying to staging server...'
-// Tool: AWS CLI
-}
-}
-stage('Integration Tests on Staging') {
-steps {
-echo 'Running integration tests on staging...'
-// Tool: Postman
-}
-}
-stage('Deploy to Production') {
-steps {
-echo 'Deploying to production server...'
-// Tool: AWS CLI
-}
-}
-}
-post {
-success {
-mail to: "indrajapolkampalli@gmail.com",
-subject: "Build Status Email",
-body: "Successfull Build!"
-}
-failure {
-mail to: "indrajapolkampalli@gmail.com",
-subject: "Build Status Email",
-body: "Failure in Build!"
-}
-}
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Example using Maven for build
+                    sh 'mvn clean package'
+                }
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                script {
+                    // Example running unit tests using JUnit
+                    sh 'mvn test'
+                    
+                    // Example running integration tests using Selenium
+                    sh 'mvn integration-test'
+                }
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                script {
+                    // Example using SonarQube for code analysis
+                    sh 'sonar-scanner'
+                }
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                script {
+                    // Example using OWASP Dependency Check for security scan
+                    sh 'dependency-check --project myProject --scan ./target'
+                }
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                script {
+                    // Example deploying to AWS EC2 using AWS CLI
+                    sh 'aws ec2 deploy-to-staging'
+                }
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                script {
+                    // Example running integration tests on staging environment
+                    sh 'mvn integration-test -Denv=staging'
+                }
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    // Example deploying to AWS EC2 production using AWS CLI
+                    sh 'aws ec2 deploy-to-production'
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Cleanup or finalization steps
+        }
+        success {
+            // Send success notification email
+            emailext subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
+                      body: "The pipeline completed successfully.",
+                      to: "indrajapolkampalli@gmail.com"
+        }
+        failure {
+            // Send failure notification email with logs attachment
+            emailext subject: "Pipeline Failure: ${currentBuild.fullDisplayName}",
+                      body: "The pipeline failed. Check logs for details.",
+                      to: "indrajapolkampalli@gmail.com",
+                      attachLog: true
+        }
+    }
 }
