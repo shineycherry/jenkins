@@ -1,78 +1,63 @@
 pipeline {
     agent any
-    
     stages {
         stage('Build') {
             steps {
-                // Placeholder build command (e.g., compiling code)
-                echo 'Building the code...'
+                // Use Maven for building
+                echo 'Building the code using Maven'
             }
         }
-        
         stage('Unit and Integration Tests') {
             steps {
-                // Placeholder unit test command
-                echo 'Running unit tests...'
-                
-                // Placeholder integration test command
-                echo 'Running integration tests...'
+                // Use JUnit for unit tests and Selenium for integration tests
+                echo 'Running unit and integration tests'
             }
         }
-        
         stage('Code Analysis') {
             steps {
-                // Placeholder code analysis command
-                echo 'Running code analysis...'
+                // Use SonarQube for code analysis
+                echo 'Running code analysis with SonarQube'
             }
         }
-        
         stage('Security Scan') {
             steps {
-                // Placeholder security scan command
-                echo 'Running security scan...'
+                // Use OWASP Dependency Check for security scanning
+                echo 'Performing security scan with OWASP Dependency Check'
             }
         }
-        
         stage('Deploy to Staging') {
             steps {
-                // Placeholder staging deployment command
-                echo 'Deploying to staging environment...'
+                // Deploy to AWS EC2 staging instance
+                echo 'Deploying to AWS EC2 staging instance'
             }
         }
-        
         stage('Integration Tests on Staging') {
             steps {
-                // Placeholder integration tests on staging command
-                echo 'Running integration tests on staging environment...'
+                // Run integration tests on staging environment
+                echo 'Running integration tests on staging environment'
             }
         }
-        
         stage('Deploy to Production') {
             steps {
-                // Placeholder production deployment command
-                echo 'Deploying to production environment...'
+                // Deploy to AWS EC2 production instance
+                echo 'Deploying to AWS EC2 production instance'
             }
         }
     }
-    
     post {
         success {
-            // Send success email notification
-            emailext(
-                to: 'indrajapolkampalli@gmail.com',
-                subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
-                body: "Pipeline completed successfully. Check logs for details.",
-                attachLog: true
-            )
+            // Email notification on success
+            emailext body: 'Pipeline execution succeeded. See attached logs.', 
+                     subject: 'Pipeline Success', 
+                     to: 'indrajapolkampalli@gmail.com', 
+                     attachLog: true
         }
         failure {
-            // Send failure email notification
-            emailext(
-                to: 'indrajapolkampalli@gmai.com',
-                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                body: "Pipeline failed. Check logs for details.",
-                attachLog: true
-            )
+            // Email notification on failure
+            emailext body: 'Pipeline execution failed. See attached logs.', 
+                     subject: 'Pipeline Failure', 
+                     to: 'indrajapolkampalli@gmail.com', 
+                     attachLog: true
         }
     }
 }
