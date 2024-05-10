@@ -4,81 +4,75 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    // Example using Maven for build
-                    sh 'mvn clean package'
-                }
+                // Placeholder build command (e.g., compiling code)
+                echo 'Building the code...'
             }
         }
+        
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    // Example running unit tests using JUnit
-                    sh 'mvn test'
-                    
-                    // Example running integration tests using Selenium
-                    sh 'mvn integration-test'
-                }
+                // Placeholder unit test command
+                echo 'Running unit tests...'
+                
+                // Placeholder integration test command
+                echo 'Running integration tests...'
             }
         }
+        
         stage('Code Analysis') {
             steps {
-                script {
-                    // Example using SonarQube for code analysis
-                    sh 'sonar-scanner'
-                }
+                // Placeholder code analysis command
+                echo 'Running code analysis...'
             }
         }
+        
         stage('Security Scan') {
             steps {
-                script {
-                    // Example using OWASP Dependency Check for security scan
-                    sh 'dependency-check --project myProject --scan ./target'
-                }
+                // Placeholder security scan command
+                echo 'Running security scan...'
             }
         }
+        
         stage('Deploy to Staging') {
             steps {
-                script {
-                    // Example deploying to AWS EC2 using AWS CLI
-                    sh 'aws ec2 deploy-to-staging'
-                }
+                // Placeholder staging deployment command
+                echo 'Deploying to staging environment...'
             }
         }
+        
         stage('Integration Tests on Staging') {
             steps {
-                script {
-                    // Example running integration tests on staging environment
-                    sh 'mvn integration-test -Denv=staging'
-                }
+                // Placeholder integration tests on staging command
+                echo 'Running integration tests on staging environment...'
             }
         }
+        
         stage('Deploy to Production') {
             steps {
-                script {
-                    // Example deploying to AWS EC2 production using AWS CLI
-                    sh 'aws ec2 deploy-to-production'
-                }
+                // Placeholder production deployment command
+                echo 'Deploying to production environment...'
             }
         }
     }
     
     post {
-        always {
-            // Cleanup or finalization steps
-        }
         success {
-            // Send success notification email
-            emailext subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
-                      body: "The pipeline completed successfully.",
-                      to: "indrajapolkampalli@gmail.com"
+            // Send success email notification
+            emailext(
+                to: 'indrajapolkampalli@gmail.com',
+                subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
+                body: "Pipeline completed successfully. Check logs for details.",
+                attachLog: true
+            )
         }
         failure {
-            // Send failure notification email with logs attachment
-            emailext subject: "Pipeline Failure: ${currentBuild.fullDisplayName}",
-                      body: "The pipeline failed. Check logs for details.",
-                      to: "indrajapolkampalli@gmail.com",
-                      attachLog: true
+            // Send failure email notification
+            emailext(
+                to: 'indrajapolkampalli@gmai.com',
+                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+                body: "Pipeline failed. Check logs for details.",
+                attachLog: true
+            )
         }
     }
 }
