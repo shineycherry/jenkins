@@ -64,14 +64,14 @@ pipeline {
         success {
             echo 'Pipeline execution successful!'
             // Send email notification on successful pipeline run
-            emailext body: "Pipeline execution successful. Check logs for details.",
+            mail to: "Pipeline execution successful. Check logs for details.",
                      subject: "Pipeline Success Notification",
                      to: "indrajapolkampalli@gmail.com"
         }
         failure {
             echo 'Pipeline execution failed!'
             // Send email notification on failed pipeline run
-            emailext body: "Pipeline execution failed. Check logs for details.",
+            mail to: "Pipeline execution failed. Check logs for details.",
                      subject: "Pipeline Failure Notification",
                      to: "indrajapolkampalli@gmail.com"
         }
