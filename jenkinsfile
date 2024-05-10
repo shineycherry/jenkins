@@ -61,19 +61,15 @@ pipeline {
     }
     
     post {
-        success {
-            echo 'Pipeline execution successful!'
-            // Send email notification on successful pipeline run
-            mail to: "Pipeline execution successful. Check logs for details.",
-                     subject: "Pipeline Success Notification",
-                     to: "indrajapolkampalli@gmail.com"
-        }
-        failure {
-            echo 'Pipeline execution failed!'
-            // Send email notification on failed pipeline run
-            mail to: "Pipeline execution failed. Check logs for details.",
-                     subject: "Pipeline Failure Notification",
-                     to: "indrajapolkampalli@gmail.com"
-        }
+    success {
+        emailext subject: "Pipeline Success Notification",
+                 body: "Pipeline execution successful. Check logs for details.",
+                 to: "indrajapolkampalli@gmail.com"
+    }
+    failure {
+        emailext subject: "Pipeline Failure Notification",
+                 body: "Pipeline execution failed. Check logs for details.",
+                 to: "indrajapolkampalli@gmail.com"
     }
 }
+
