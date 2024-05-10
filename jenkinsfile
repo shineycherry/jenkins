@@ -3,61 +3,67 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Use Maven for building
-                echo 'Building the code using Maven'
+                echo 'Simulating code build...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                // Use JUnit for unit tests and Selenium for integration tests
-                echo 'Running unit and integration tests'
+                echo 'Simulating running unit and integration tests...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
         stage('Code Analysis') {
             steps {
-                // Use SonarQube for code analysis
-                echo 'Running code analysis with SonarQube'
+                echo 'Simulating code analysis...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
         stage('Security Scan') {
             steps {
-                // Use OWASP Dependency Check for security scanning
-                echo 'Performing security scan with OWASP Dependency Check'
+                echo 'Simulating security scanning...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
         stage('Deploy to Staging') {
             steps {
-                // Deploy to AWS EC2 staging instance
-                echo 'Deploying to AWS EC2 staging instance'
+                echo 'Simulating deployment to staging...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                // Run integration tests on staging environment
-                echo 'Running integration tests on staging environment'
+                echo 'Simulating integration tests on staging...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy to AWS EC2 production instance
-                echo 'Deploying to AWS EC2 production instance'
+                echo 'Simulating deployment to production...'
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
             }
         }
     }
     post {
-        success {
-            // Email notification on success
-            emailext body: 'Pipeline execution succeeded, 
-                     subject: 'Pipeline Success', 
-                     to: 'indrajapolkampalli@gmail.com', 
-        
-        }
-        failure {
-            // Email notification on failure
-            emailext body: 'Pipeline execution failed,
-                     subject: 'Pipeline Failure', 
-                     to: 'indrajapolkampalli@gmail.com', 
-                
+        always {
+            // Send email notification
+            emailext subject: "${currentBuild.result == 'SUCCESS' ? 'Pipeline Success' : 'Pipeline Failure'}",
+                      body: "Pipeline execution result: ${currentBuild.result}",
+                      to: 'indrajapolkampalli@gmail.com'
         }
     }
 }
